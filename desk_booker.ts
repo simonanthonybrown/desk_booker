@@ -31,45 +31,35 @@ function addDays(date: Date, days: number): Date {
   return result;
 }
 
-class DeskFinder {
-  deskArray: Array<Desk>;
-  bookingArray: Array<DeskBooking>;
+function DeskNextAvailable(startDate: Date, Id: number, bookingArray: Array<DeskBooking>): Date {
+  var currentDate = startDate;
+  var deskExists = bookingArray.some((booking) => booking.bookedDesk.Id === Id);
 
-  constructor(desks: Array<Desk>, bookings: Array<DeskBooking>) {
-    this.deskArray = desks;
-    this.bookingArray = bookings;
+  if (!deskExists) {
+    throw new Error("Desk with this ID does not exist.");
   }
 
-  DeskNextAvailable(startDate: Date, Id: number): Date {
-    var currentDate = startDate;
-    var deskExists = this.deskArray.some((desk) => desk.Id === Id);
-
-    if (!deskExists) {
-      throw new Error("Desk with this ID does not exist.");
+  bookingArray.forEach(booking => {
+    if (booking.bookedDesk.Id === Id && booking.bookingDate !== currentDate) {
+      return currentDate
     }
+  });
 
-    this.bookingArray.forEach(booking => {
-      if (booking.bookedDesk.Id === Id && booking.bookingDate !== currentDate) {
-        return currentDate
-      }
-    });
+  for (var days = 0; days < bookingArray.length; days++) {
+    var daysBookings = bookingArray.filter(
+      (booking) => booking.bookingDate === currentDate
+    );
+    var deskHasBooking = daysBookings.some(
+      (desk) => desk.bookedDesk.Id === Id
+    );
 
-    for (var days = 0; days < this.bookingArray.length; days++) {
-      var daysBookings = this.bookingArray.filter(
-        (booking) => booking.bookingDate === currentDate
-      );
-      var deskHasBooking = daysBookings.some(
-        (desk) => desk.bookedDesk.Id === Id
-      );
-
-      if (!deskHasBooking) {
-        return currentDate;
-      } else {
-        currentDate = addDays(currentDate, 1);
-      }
+    if (!deskHasBooking) {
+      return currentDate;
+    } else {
+      currentDate = addDays(currentDate, 1);
     }
-    return currentDate;
   }
+  return currentDate;
 }
 
 // Test Code
@@ -133,6 +123,6 @@ var bookingArray: Array<DeskBooking> = [
   booking6,
 ];
 
-var findADesk = new DeskFinder(deskArray, bookingArray);
+var findADesk = DeskNextAvailable(new Date(2023, 11, 23), 2, bookingArray);
 
-console.log(findADesk.DeskNextAvailable(new Date(2023, 11, 22), 1));
+console.log(findADesk);

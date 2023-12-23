@@ -19,36 +19,29 @@ function addDays(date, days) {
     result.setDate(result.getDate() + days);
     return result;
 }
-var DeskFinder = /** @class */ (function () {
-    function DeskFinder(desks, bookings) {
-        this.deskArray = desks;
-        this.bookingArray = bookings;
+function DeskNextAvailable(startDate, Id, bookingArray) {
+    var currentDate = startDate;
+    var deskExists = bookingArray.some(function (booking) { return booking.bookedDesk.Id === Id; });
+    if (!deskExists) {
+        throw new Error("Desk with this ID does not exist.");
     }
-    DeskFinder.prototype.DeskNextAvailable = function (startDate, Id) {
-        var currentDate = startDate;
-        var deskExists = this.deskArray.some(function (desk) { return desk.Id === Id; });
-        if (!deskExists) {
-            throw new Error("Desk with this ID does not exist.");
+    bookingArray.forEach(function (booking) {
+        if (booking.bookedDesk.Id === Id && booking.bookingDate !== currentDate) {
+            return currentDate;
         }
-        this.bookingArray.forEach(function (booking) {
-            if (booking.bookedDesk.Id === Id && booking.bookingDate !== currentDate) {
-                return currentDate;
-            }
-        });
-        for (var days = 0; days < this.bookingArray.length; days++) {
-            var daysBookings = this.bookingArray.filter(function (booking) { return booking.bookingDate === currentDate; });
-            var deskHasBooking = daysBookings.some(function (desk) { return desk.bookedDesk.Id === Id; });
-            if (!deskHasBooking) {
-                return currentDate;
-            }
-            else {
-                currentDate = addDays(currentDate, 1);
-            }
+    });
+    for (var days = 0; days < bookingArray.length; days++) {
+        var daysBookings = bookingArray.filter(function (booking) { return booking.bookingDate === currentDate; });
+        var deskHasBooking = daysBookings.some(function (desk) { return desk.bookedDesk.Id === Id; });
+        if (!deskHasBooking) {
+            return currentDate;
         }
-        return currentDate;
-    };
-    return DeskFinder;
-}());
+        else {
+            currentDate = addDays(currentDate, 1);
+        }
+    }
+    return currentDate;
+}
 // Test Code
 var desk1 = new Desk(1, true);
 var desk2 = new Desk(2, true);
@@ -70,5 +63,5 @@ var bookingArray = [
     booking5,
     booking6,
 ];
-var findADesk = new DeskFinder(deskArray, bookingArray);
-console.log(findADesk.DeskNextAvailable(new Date(2023, 11, 22), 1));
+var findADesk = DeskNextAvailable(new Date(2023, 11, 23), 2, bookingArray);
+console.log(findADesk);
