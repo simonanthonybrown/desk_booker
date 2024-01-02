@@ -1,5 +1,5 @@
 class Desk {
-  //Class to create desk object with an ID and a boolean showing if by a window
+  // Class to create desk object with an ID and a boolean showing if by a window
   Id: number;
   ByWindow: boolean;
   constructor(Id: number, ByWindow: boolean) {
@@ -9,7 +9,7 @@ class Desk {
 }
 
 class DeskBooking {
-  //Class to create desk booking objects
+  // Class to create desk booking objects
   bookedDesk: Desk;
   bookingDate: Date;
   firstName: string;
@@ -28,19 +28,19 @@ class DeskBooking {
 }
 
 function addDays(date: Date, days: number): Date {
-  //Function to add a specified number of days to a date
+  // Function to add a specified number of days to a date
   let result = new Date(date);
   result.setDate(result.getDate() + days);
   return result;
 }
 
 function DeskNextAvailable(
-  //Function to check when desk is next available by date and ID
+  // Function to check when desk is next available by date and ID
   startDate: Date,
   Id: number,
   bookingArray: Array<DeskBooking>
 ): Date {
-  //Filter bookings by Id passed into function
+  // Filter bookings by Id passed into function
   var bookingsForDesk = bookingArray.filter(
     (booking) => booking.bookedDesk.Id === Id
   );
@@ -50,20 +50,20 @@ function DeskNextAvailable(
     return startDate;
   }
 
-  //Array to contain all dates for current desk bookings
+  // Array to contain all dates for current desk bookings
   var bookedDates = [];
 
-  //Iterate through bookings and add all dates to array
+  // Iterate through bookings and add all dates to array
   for (var booking of bookingsForDesk) {
     bookedDates.push(booking.bookingDate);
   }
 
-  //Sort the dates from earliest to latest
+  // Sort the dates from earliest to latest
   bookedDates.sort((a, b) => a.getTime() - b.getTime());
 
-  /*Sort the dates from earliest to latest, iterate through dates and check if
+  /* Sort the dates from earliest to latest, iterate through dates and check if
   start date is in the array. With each loop increment the date by 1 and check if
-  it's in the array. If it isn't, return that date on that loop.*/
+  it's in the array. If it isn't, return that date on that loop. */
 
   for (var i = 0; i < bookedDates.length; i++) {
     var currentDate = addDays(startDate, i);
@@ -72,14 +72,14 @@ function DeskNextAvailable(
     }
   }
 
-  /*If no date returned above then next available date is the final date in bookedDates +1.*/
+  // If no date returned above then next available date is the final date in bookedDates +1.
 
-  //Check if any current bookings are for the start date given
+  // Check if any current bookings are for the start date given
   var bookingWithStartDate = bookingsForDesk.some(
     (booking) => booking.bookingDate === startDate
   );
 
-  //If no bookings with this Id and start date, return start date as next available
+  // If no bookings with this Id and start date, return start date as next available
   if (!bookingWithStartDate) {
     return startDate;
   }
