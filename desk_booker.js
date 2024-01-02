@@ -45,7 +45,6 @@ startDate, Id, bookingArray) {
     var bookingWithStartDate = bookedDates.some(function (bookingDate) { return bookingDate.getTime() === startDate.getTime(); });
     console.log("bookingWithStartDate: ", bookingWithStartDate);
     console.log("start date: ", startDate);
-    console.log("bookingDate within array: ", bookingsForDesk[0].bookingDate);
     /* If no bookings with this Id and start date, return start date as
     next available */
     if (!bookingWithStartDate) {
@@ -54,21 +53,27 @@ startDate, Id, bookingArray) {
     console.log("bookedDates: ", bookedDates);
     // Sort the dates from earliest to latest
     bookedDates.sort(function (a, b) { return a.getTime() - b.getTime(); });
+    // Find index of start date in array
+    var dateIndex = bookedDates.map(Number).indexOf(+startDate);
+    console.log("Index of startDate: ", dateIndex);
+    // Remove items from booked date array from before the start date given
+    var bookedDatesSpliced = bookedDates.splice(dateIndex);
+    console.log("Date array after splice: ", bookedDatesSpliced);
     /* Sort the dates from earliest to latest, check if start date is at
     index 0. If it isn't then that date is returned, if it is then each loop
     increments the date by 1 and checks if it's in the array. If it isn't,
     return the date from that iteration. */
-    for (var index = 0; index < bookedDates.length; index++) {
+    for (var index = 0; index < bookedDatesSpliced.length; index++) {
         var currentDate = addDays(startDate, index);
-        if (!(currentDate.getTime() === bookedDates[index].getTime())) {
+        if (!(currentDate.getTime() === bookedDatesSpliced[index].getTime())) {
             return currentDate;
         }
     }
-    return addDays(startDate, bookedDates.length);
     /* If no date returned above then the desk is booked consecutively
-    for as many days as there are indeces in the array. Therefore return
-    next free day which is the start date with the length of the array
-    added on. */
+  for as many days as there are indeces in the array. Therefore return
+  next free day which is the start date with the length of the array
+  added on. */
+    return addDays(startDate, bookedDatesSpliced.length);
 }
 // Test Code
 var desk1 = new Desk(1, true);
@@ -79,9 +84,9 @@ var booking0 = new DeskBooking(desk1, new Date(2024, 0, 22), "Stanley", "Cooper"
 var booking1 = new DeskBooking(desk1, new Date(2024, 0, 23), "Stanley", "Cooper");
 var booking2 = new DeskBooking(desk1, new Date(2024, 0, 24), "Stanley", "Cooper");
 var booking3 = new DeskBooking(desk1, new Date(2024, 0, 25), "Stanley", "Cooper");
-var booking4 = new DeskBooking(desk2, new Date(2024, 0, 22), "Andrew", "Ember");
-var booking5 = new DeskBooking(desk2, new Date(2024, 0, 23), "Andrew", "Ember");
-var booking6 = new DeskBooking(desk2, new Date(2024, 0, 24), "Andrew", "Ember");
+var booking4 = new DeskBooking(desk2, new Date(2024, 0, 21), "Andrew", "Ember");
+var booking5 = new DeskBooking(desk2, new Date(2024, 0, 22), "Andrew", "Ember");
+var booking6 = new DeskBooking(desk2, new Date(2024, 0, 23), "Andrew", "Ember");
 var bookedDesks = [
     booking0,
     booking1,
@@ -91,5 +96,5 @@ var bookedDesks = [
     booking5,
     booking6,
 ];
-var findADesk = DeskNextAvailable(new Date(2024, 0, 22), 1, bookedDesks);
+var findADesk = DeskNextAvailable(new Date(2024, 0, 23), 1, bookedDesks);
 console.log(findADesk);
