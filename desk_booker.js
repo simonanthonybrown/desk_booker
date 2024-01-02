@@ -25,16 +25,12 @@ function DeskNextAvailable(
 startDate, Id, bookingArray) {
     // Filter bookings by Id passed into function
     var bookingsForDesk = bookingArray.filter(function (booking) { return booking.bookedDesk.Id === Id; });
+    // Check for what this array looks like
+    console.log("bookingsForDesk: ", bookingsForDesk);
+    console.log("Length of bookingsForDesk: ", bookingsForDesk.length);
     /* Check that the length of bookings array is 0,
     if so no bookings with this desk Id so return date entered*/
     if (bookingsForDesk.length === 0) {
-        return startDate;
-    }
-    // Check if any current bookings are for the start date given
-    var bookingWithStartDate = bookingsForDesk.some(function (booking) { return booking.bookingDate === startDate; });
-    /* If no bookings with this Id and start date, return start date as
-    next available */
-    if (!bookingWithStartDate) {
         return startDate;
     }
     // Array to contain all dates for current desk bookings
@@ -44,6 +40,18 @@ startDate, Id, bookingArray) {
         var booking = bookingsForDesk_1[_i];
         bookedDates.push(booking.bookingDate);
     }
+    console.log("bookedDates: ", bookedDates);
+    // Check if any current bookings are for the start date given
+    var bookingWithStartDate = bookedDates.some(function (bookingDate) { return bookingDate.getTime() === startDate.getTime(); });
+    console.log("bookingWithStartDate: ", bookingWithStartDate);
+    console.log("start date: ", startDate);
+    console.log("bookingDate within array: ", bookingsForDesk[0].bookingDate);
+    /* If no bookings with this Id and start date, return start date as
+    next available */
+    if (!bookingWithStartDate) {
+        return startDate;
+    }
+    console.log("bookedDates: ", bookedDates);
     // Sort the dates from earliest to latest
     bookedDates.sort(function (a, b) { return a.getTime() - b.getTime(); });
     /* Sort the dates from earliest to latest, check if start date is at
@@ -52,7 +60,7 @@ startDate, Id, bookingArray) {
     return the date from that iteration. */
     for (var index = 0; index < bookedDates.length; index++) {
         var currentDate = addDays(startDate, index);
-        if (!(currentDate === bookedDates[index])) {
+        if (!(currentDate.getTime() === bookedDates[index].getTime())) {
             return currentDate;
         }
     }
@@ -61,22 +69,6 @@ startDate, Id, bookingArray) {
     for as many days as there are indeces in the array. Therefore return
     next free day which is the start date with the length of the array
     added on. */
-    // bookingArray.forEach((booking) => {
-    //   if (booking.bookedDesk.Id === Id && booking.bookingDate !== startDate) {
-    //     return startDate;
-    //   }
-    // });
-    // for (var days = 0; days < bookingArray.length; days++) {
-    //   var daysBookings = bookingArray.filter(
-    //     (booking) => booking.bookingDate === startDate
-    //   );
-    //   var deskHasBooking = daysBookings.some((desk) => desk.bookedDesk.Id === Id);
-    //   if (!deskHasBooking) {
-    //     return startDate;
-    //   } else {
-    //     startDate = addDays(startDate, 1);
-    //   }
-    // }
 }
 // Test Code
 var desk1 = new Desk(1, true);
@@ -90,7 +82,7 @@ var booking3 = new DeskBooking(desk1, new Date(2024, 0, 25), "Stanley", "Cooper"
 var booking4 = new DeskBooking(desk2, new Date(2024, 0, 22), "Andrew", "Ember");
 var booking5 = new DeskBooking(desk2, new Date(2024, 0, 23), "Andrew", "Ember");
 var booking6 = new DeskBooking(desk2, new Date(2024, 0, 24), "Andrew", "Ember");
-var bookingArray = [
+var bookedDesks = [
     booking0,
     booking1,
     booking2,
@@ -99,6 +91,5 @@ var bookingArray = [
     booking5,
     booking6,
 ];
-console.log(bookingArray);
-var findADesk = DeskNextAvailable(new Date(2024, 0, 22), 1, bookingArray);
+var findADesk = DeskNextAvailable(new Date(2024, 0, 22), 1, bookedDesks);
 console.log(findADesk);
