@@ -51,9 +51,9 @@ startDate, Id, bookingArray) {
     // Remove items from booked date array from before the start date given
     var bookedDatesSpliced = bookedDates.splice(dateIndex);
     // Sort the dates from earliest to latest, check if start date is at
-    // index 0. If it isn't then that date is returned, if it is then each loop
-    // increments the date by 1 and checks if it's in the array. If it isn't,
-    // return the date from that iteration.
+    // index 0. If it isn't then that date is returned, if it is then each
+    // loop increments the date by 1 and checks if it's in the array. If it
+    // isn't, return the date from that iteration.
     for (var index = 0; index < bookedDatesSpliced.length; index++) {
         var currentDate = addDays(startDate, index);
         if (!(currentDate.getTime() === bookedDatesSpliced[index].getTime())) {
@@ -66,6 +66,14 @@ startDate, Id, bookingArray) {
     // added on.
     return addDays(startDate, bookedDatesSpliced.length);
 }
+function windowDeskNextAvailable(
+// Function to check when a desk by a window is next available
+startDate, bookingArray) {
+    // Filter bookings by window desks booked
+    var windowDeskBookings = bookingArray.filter(function (booking) { return booking.bookedDesk.ByWindow === true; });
+    console.log(windowDeskBookings);
+    return startDate;
+}
 // Test Code
 var desk1 = new Desk(1, true);
 var desk2 = new Desk(2, true);
@@ -73,8 +81,8 @@ var desk3 = new Desk(3, false);
 var deskArray = [desk1, desk2, desk3];
 var booking0 = new DeskBooking(desk1, new Date(2024, 0, 22), "Stanley", "Cooper");
 var booking1 = new DeskBooking(desk1, new Date(2024, 0, 23), "Stanley", "Cooper");
-var booking2 = new DeskBooking(desk1, new Date(2024, 0, 24), "Stanley", "Cooper");
-var booking3 = new DeskBooking(desk1, new Date(2024, 0, 25), "Stanley", "Cooper");
+var booking2 = new DeskBooking(desk1, new Date(2024, 0, 25), "Stanley", "Cooper");
+var booking3 = new DeskBooking(desk1, new Date(2024, 0, 26), "Stanley", "Cooper");
 var booking4 = new DeskBooking(desk2, new Date(2024, 0, 21), "Andrew", "Ember");
 var booking5 = new DeskBooking(desk2, new Date(2024, 0, 22), "Andrew", "Ember");
 var booking6 = new DeskBooking(desk2, new Date(2024, 0, 23), "Andrew", "Ember");
@@ -87,5 +95,7 @@ var bookedDesks = [
     booking5,
     booking6,
 ];
-var findADesk = DeskNextAvailable(new Date(2024, 0, 21), 2, bookedDesks);
+var findADesk = DeskNextAvailable(new Date(2024, 0, 22), 1, bookedDesks);
+var findWindowDesk = windowDeskNextAvailable(new Date(2024, 0, 22), bookedDesks);
 console.log(findADesk);
+console.log(findWindowDesk);

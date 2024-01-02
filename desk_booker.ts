@@ -1,5 +1,6 @@
 class Desk {
-  // Class to create desk object with an ID and a boolean showing if by a window
+  // Class to create desk object with an ID and a boolean showing if by
+  // a window
   Id: number;
   ByWindow: boolean;
   constructor(Id: number, ByWindow: boolean) {
@@ -40,6 +41,7 @@ function DeskNextAvailable(
   Id: number,
   bookingArray: Array<DeskBooking>
 ): Date {
+
   // Filter bookings by Id passed into function
   var bookingsForDesk = bookingArray.filter(
     (booking) => booking.bookedDesk.Id === Id
@@ -75,13 +77,14 @@ function DeskNextAvailable(
 
   // Find index of start date in array
   let dateIndex = bookedDates.map(Number).indexOf(+startDate);
+
   // Remove items from booked date array from before the start date given
   let bookedDatesSpliced = bookedDates.splice(dateIndex);
 
   // Sort the dates from earliest to latest, check if start date is at
-  // index 0. If it isn't then that date is returned, if it is then each loop
-  // increments the date by 1 and checks if it's in the array. If it isn't,
-  // return the date from that iteration.
+  // index 0. If it isn't then that date is returned, if it is then each
+  // loop increments the date by 1 and checks if it's in the array. If it
+  // isn't, return the date from that iteration.
 
   for (var index = 0; index < bookedDatesSpliced.length; index++) {
     var currentDate = addDays(startDate, index);
@@ -97,6 +100,29 @@ function DeskNextAvailable(
 
   return addDays(startDate, bookedDatesSpliced.length);
 }
+
+function windowDeskNextAvailable (
+  // Function to check when a desk by a window is next available
+  startDate: Date,
+  bookingArray: Array<DeskBooking>
+): Date {
+
+  // Filter bookings by window desks booked
+  var windowDeskBookings = bookingArray.filter(
+    (booking) => booking.bookedDesk.ByWindow === true
+  );
+  console.log(windowDeskBookings)
+
+  // Check that the length of window deks bookings array is 0,
+  // if so no window desk bookings so return date entered
+  if (windowDeskBookings.length === 0) {
+    return startDate;
+  }
+
+  
+  return startDate
+}
+
 
 // Test Code
 
@@ -120,13 +146,13 @@ var booking1: DeskBooking = new DeskBooking(
 );
 var booking2: DeskBooking = new DeskBooking(
   desk1,
-  new Date(2024, 0, 24),
+  new Date(2024, 0, 25),
   "Stanley",
   "Cooper"
 );
 var booking3: DeskBooking = new DeskBooking(
   desk1,
-  new Date(2024, 0, 25),
+  new Date(2024, 0, 26),
   "Stanley",
   "Cooper"
 );
@@ -159,6 +185,9 @@ var bookedDesks: Array<DeskBooking> = [
   booking6,
 ];
 
-var findADesk = DeskNextAvailable(new Date(2024, 0, 21), 2, bookedDesks);
+var findADesk = DeskNextAvailable(new Date(2024, 0, 22), 1, bookedDesks);
+
+var findWindowDesk = windowDeskNextAvailable(new Date(2024, 0, 22), bookedDesks);
 
 console.log(findADesk);
+console.log(findWindowDesk);
