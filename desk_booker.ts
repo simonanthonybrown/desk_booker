@@ -85,10 +85,10 @@ function DeskNextAvailable(
   // Remove items from booked date array from before the start date given
   let bookedDatesSpliced = bookedDates.splice(dateIndex);
 
-  // Sort the dates from earliest to latest, check if start date is at
-  // index 0. If it isn't then that date is returned, if it is then each
-  // loop increments the date by 1 and checks if it's in the array. If it
-  // isn't, return the date from that iteration.
+  // Using sorted dates and start date index, check if start date is at
+  // index 0. If it isn't then that date is returned as the desk is free,
+  // if it is then each loop increments the date by 1 and checks if the next
+  // date is in the array. If it isn't, return the date from that iteration.
 
   for (var index = 0; index < bookedDatesSpliced.length; index++) {
     var currentDate = addDays(startDate, index);
@@ -99,8 +99,8 @@ function DeskNextAvailable(
 
   // If no date returned above then the desk is booked consecutively
   // for as many days as there are indeces in the array. Therefore return
-  // next free day which is the start date with the length of the array
-  // added on.
+  // next free day which is the start date with the length of the
+  // bookedDatesSpliced array added on.
 
   return addDays(startDate, bookedDatesSpliced.length);
 }
