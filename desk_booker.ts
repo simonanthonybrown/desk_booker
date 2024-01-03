@@ -35,19 +35,88 @@ function addDays(date: Date, days: number): Date {
   return result;
 }
 
+function removeArrayDuplicates(data: any[]): any[] {
+  return data.filter((value, index) => data.indexOf(value) === index);
+}
+
+// function DeskCheck(startDate: Date, bookingArray: Array<DeskBooking>): Date {
+//   // Function for use in DeskNextAvailable and WindowDeskNextAvaiable.
+//   // Takes the start date and desk booking array and checks when the
+//   // next non-booked date is from the start date given.
+
+//   // Array to contain all dates for current desk bookings
+//   var bookedDates = [];
+
+//   // Iterate through bookings and add all dates to array
+//   for (var booking of bookingArray) {
+//     bookedDates.push(booking.bookingDate);
+//   }
+
+//   // Create new array with only unique dates
+//   let uniqueDeskBookings = bookedDates
+//     .map(function (date) {
+//       return date.getTime();
+//     })
+//     .filter(function (date, i, array) {
+//       return array.indexOf(date) === i;
+//     })
+//     .map(function (time) {
+//       return new Date(time);
+//     });
+//   console.log(uniqueDeskBookings);
+
+//   // Check if any current bookings are for the start date given
+//   var bookingWithStartDate = uniqueDeskBookings.some(
+//     (bookingDate) => bookingDate.getTime() === startDate.getTime()
+//   );
+
+//   // If no bookings for start date, return start date as
+//   // next available
+//   if (!bookingWithStartDate) {
+//     return startDate;
+//   }
+
+//   // Sort the dates from earliest to latest
+//   bookedDates.sort((a, b) => a.getTime() - b.getTime());
+
+//   // Find index of start date in array
+//   let dateIndex = bookedDates.map(Number).indexOf(+startDate);
+
+//   // Remove items from booked date array from before the start date given
+//   let bookedDatesSpliced = bookedDates.splice(dateIndex);
+
+//   // Sort the dates from earliest to latest, check if start date is at
+//   // index 0. If it isn't then that date is returned, if it is then each
+//   // loop increments the date by 1 and checks if it's in the array. If it
+//   // isn't, return the date from that iteration.
+
+//   for (var index = 0; index < bookedDatesSpliced.length; index++) {
+//     var currentDate = addDays(startDate, index);
+//     if (!(currentDate.getTime() === bookedDatesSpliced[index].getTime())) {
+//       return currentDate;
+//     }
+//   }
+
+//   // If no date returned above then the desk is booked consecutively
+//   // for as many days as there are indeces in the array. Therefore return
+//   // next free day which is the start date with the length of the array
+//   // added on.
+
+//   return addDays(startDate, bookedDatesSpliced.length);
+// }
+
 function DeskNextAvailable(
   // Function to check when desk is next available by date and ID
   startDate: Date,
   Id: number,
   bookingArray: Array<DeskBooking>
 ): Date {
-
   // Filter bookings by Id passed into function
   var bookingsForDesk = bookingArray.filter(
     (booking) => booking.bookedDesk.Id === Id
   );
 
-  // Check that the length of bookings array is 0, 
+  // Check that the length of bookings array is 0,
   // if so no bookings with this desk Id so return date entered
   if (bookingsForDesk.length === 0) {
     return startDate;
@@ -95,34 +164,44 @@ function DeskNextAvailable(
 
   // If no date returned above then the desk is booked consecutively
   // for as many days as there are indeces in the array. Therefore return
-  // next free day which is the start date with the length of the array 
+  // next free day which is the start date with the length of the array
   // added on.
 
   return addDays(startDate, bookedDatesSpliced.length);
 }
 
-function windowDeskNextAvailable (
+function windowDeskNextAvailable(
   // Function to check when a desk by a window is next available
   startDate: Date,
   bookingArray: Array<DeskBooking>
 ): Date {
-
   // Filter bookings by window desks booked
   var windowDeskBookings = bookingArray.filter(
     (booking) => booking.bookedDesk.ByWindow === true
   );
-  console.log(windowDeskBookings)
+  console.log(windowDeskBookings);
 
-  // Check that the length of window deks bookings array is 0,
+    // Check that the length of window deks bookings array is 0,
   // if so no window desk bookings so return date entered
   if (windowDeskBookings.length === 0) {
     return startDate;
   }
 
-  
+  // Create array that contains only the desk IDs of the booked window desks
+  let windowDeskIds = []
+  for (var booking of windowDeskBookings) {
+    windowDeskIds.push(booking.bookedDesk.Id);
+  }
+
+  // Create array of unique desk IDs
+  let uniqueWindowDeskIds = [...new Set(windowDeskIds)] // TODO: fix this, find best way to get unique IDs
+  console.log("Unique window desk IDs: ", uniqueWindowDeskIds)
+
+  // Plan is to get each unique window desk ID that is booked, run them through "DeskNextAvailable",
+  // add results to an array, sort them, then return whichever date is sooner (index 0 of the array).
+
   return startDate
 }
-
 
 // Test Code
 
@@ -187,7 +266,10 @@ var bookedDesks: Array<DeskBooking> = [
 
 var findADesk = DeskNextAvailable(new Date(2024, 0, 22), 1, bookedDesks);
 
-var findWindowDesk = windowDeskNextAvailable(new Date(2024, 0, 22), bookedDesks);
+var findWindowDesk = windowDeskNextAvailable(
+  new Date(2024, 0, 22),
+  bookedDesks
+);
 
 console.log(findADesk);
 console.log(findWindowDesk);
