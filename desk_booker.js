@@ -29,7 +29,6 @@ function DeskNextAvailable(
 startDate, Id, bookingArray) {
     // Filter bookings by Id passed into function
     var bookingsForDesk = bookingArray.filter(function (booking) { return booking.bookedDesk.Id === Id; });
-    console.log("bookings for desk by ID: ", bookingsForDesk);
     // Check that the length of bookings array is 0,
     // if so no bookings with this desk Id so return date entered
     if (bookingsForDesk.length === 0) {
@@ -76,7 +75,6 @@ function windowDeskNextAvailable(
 startDate, bookingArray) {
     // Filter bookings by window desks booked
     var windowDeskBookings = bookingArray.filter(function (booking) { return booking.bookedDesk.ByWindow === true; });
-    console.log(windowDeskBookings);
     // Check that the length of window deks bookings array is 0,
     // if so no window desk bookings so return date entered
     if (windowDeskBookings.length === 0) {
@@ -90,10 +88,6 @@ startDate, bookingArray) {
     }
     // Create array of unique desk IDs
     var uniqueWindowDeskIds = removeArrayDuplicates(windowDeskIds);
-    console.log("Unique window desk IDs: ", uniqueWindowDeskIds);
-    // Plan is to get each unique window desk ID that is booked, run them
-    // through "DeskNextAvailable", add results to an array, sort them,
-    // then return whichever date is sooner (index 0 of the array).
     var windowDeskFree = [];
     // Pass each desk ID of booked window desks to DeskNextAvailable to find
     // earliest date a window desk is avaialble
@@ -102,10 +96,8 @@ startDate, bookingArray) {
         var dateAvailabe = DeskNextAvailable(startDate, deskId, windowDeskBookings);
         windowDeskFree.push(dateAvailabe);
     }
-    console.log("Window desks free: ", windowDeskFree);
     // Sort the window desks available from earliest to latest date
     windowDeskFree.sort(function (a, b) { return a.getTime() - b.getTime(); });
-    console.log("Sorted free window desk dates: ", windowDeskFree);
     // Return the earliest available window desk date (first index of array)
     return windowDeskFree[0];
 }
@@ -130,7 +122,9 @@ var bookedDesks = [
     booking5,
     booking6,
 ];
-var findADesk = DeskNextAvailable(new Date(2024, 0, 22), 1, bookedDesks);
+var deskOneAvailable = DeskNextAvailable(new Date(2024, 0, 22), 1, bookedDesks);
+var deskTwoAvailable = DeskNextAvailable(new Date(2024, 0, 22), 2, bookedDesks);
 var findWindowDesk = windowDeskNextAvailable(new Date(2024, 0, 22), bookedDesks);
-console.log(findADesk);
-console.log(findWindowDesk);
+console.log("Desk1 next available: ", deskOneAvailable);
+console.log("Desk2 next available: ", deskTwoAvailable);
+console.log("Window desk next available: ", findWindowDesk);
