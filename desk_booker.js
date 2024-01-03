@@ -1,19 +1,3 @@
-var Desk = /** @class */ (function () {
-    function Desk(Id, ByWindow) {
-        this.Id = Id;
-        this.ByWindow = ByWindow;
-    }
-    return Desk;
-}());
-var DeskBooking = /** @class */ (function () {
-    function DeskBooking(bookedDesk, bookingDate, firstName, lastName) {
-        this.bookedDesk = bookedDesk;
-        this.bookingDate = bookingDate;
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
-    return DeskBooking;
-}());
 function addDays(date, days) {
     // Function to add a specified number of days to a date
     var result = new Date(date);
@@ -102,17 +86,61 @@ startDate, bookingArray) {
     return windowDeskFree[0];
 }
 // Test Code
-var desk1 = new Desk(1, true);
-var desk2 = new Desk(2, true);
-var desk3 = new Desk(3, false);
+var desk1 = {
+    Id: 1,
+    ByWindow: true,
+};
+var desk2 = {
+    Id: 2,
+    ByWindow: true,
+};
+var desk3 = {
+    Id: 3,
+    ByWindow: false,
+};
 var deskArray = [desk1, desk2, desk3];
-var booking0 = new DeskBooking(desk1, new Date(2024, 0, 22), "Stanley", "Cooper");
-var booking1 = new DeskBooking(desk1, new Date(2024, 0, 24), "Stanley", "Cooper");
-var booking2 = new DeskBooking(desk1, new Date(2024, 0, 25), "Stanley", "Cooper");
-var booking3 = new DeskBooking(desk1, new Date(2024, 0, 26), "Stanley", "Cooper");
-var booking4 = new DeskBooking(desk2, new Date(2024, 0, 21), "Andrew", "Ember");
-var booking5 = new DeskBooking(desk2, new Date(2024, 0, 22), "Andrew", "Ember");
-var booking6 = new DeskBooking(desk2, new Date(2024, 0, 23), "Andrew", "Ember");
+var booking0 = {
+    bookedDesk: desk1,
+    bookingDate: new Date(2024, 0, 22),
+    firstName: "Stanley",
+    lastName: "Cooper",
+};
+var booking1 = {
+    bookedDesk: desk1,
+    bookingDate: new Date(2024, 0, 24),
+    firstName: "Stanley",
+    lastName: "Cooper",
+};
+var booking2 = {
+    bookedDesk: desk1,
+    bookingDate: new Date(2024, 0, 25),
+    firstName: "Stanley",
+    lastName: "Cooper",
+};
+var booking3 = {
+    bookedDesk: desk1,
+    bookingDate: new Date(2024, 0, 26),
+    firstName: "Stanley",
+    lastName: "Cooper",
+};
+var booking4 = {
+    bookedDesk: desk2,
+    bookingDate: new Date(2024, 0, 21),
+    firstName: "Andrew",
+    lastName: "Ember",
+};
+var booking5 = {
+    bookedDesk: desk2,
+    bookingDate: new Date(2024, 0, 22),
+    firstName: "Andrew",
+    lastName: "Ember",
+};
+var booking6 = {
+    bookedDesk: desk2,
+    bookingDate: new Date(2024, 0, 23),
+    firstName: "Andrew",
+    lastName: "Ember",
+};
 var bookedDesks = [
     booking0,
     booking1,

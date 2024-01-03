@@ -1,31 +1,16 @@
-class Desk {
-  // Class to create desk object with an ID and a boolean showing if by
-  // a window
+interface Desk {
+  // Interface for shape of desk object with an ID and a boolean showing if
+  // by a window
   Id: number;
   ByWindow: boolean;
-  constructor(Id: number, ByWindow: boolean) {
-    this.Id = Id;
-    this.ByWindow = ByWindow;
-  }
 }
 
-class DeskBooking {
-  // Class to create desk booking objects
+interface DeskBooking {
+  // Interface for shape of desk booking objects
   bookedDesk: Desk;
   bookingDate: Date;
   firstName: string;
   lastName: string;
-  constructor(
-    bookedDesk: Desk,
-    bookingDate: Date,
-    firstName: string,
-    lastName: string
-  ) {
-    this.bookedDesk = bookedDesk;
-    this.bookingDate = bookingDate;
-    this.firstName = firstName;
-    this.lastName = lastName;
-  }
 }
 
 function addDays(date: Date, days: number): Date {
@@ -147,54 +132,63 @@ function windowDeskNextAvailable(
 
 // Test Code
 
-var desk1: Desk = new Desk(1, true);
-var desk2: Desk = new Desk(2, true);
-var desk3: Desk = new Desk(3, false);
+var desk1: Desk = {
+  Id: 1,
+  ByWindow: true,
+};
+var desk2: Desk = {
+  Id: 2,
+  ByWindow: true,
+};
+var desk3: Desk = {
+  Id: 3,
+  ByWindow: false,
+};
 
 var deskArray: Array<Desk> = [desk1, desk2, desk3];
 
-var booking0: DeskBooking = new DeskBooking(
-  desk1,
-  new Date(2024, 0, 22),
-  "Stanley",
-  "Cooper"
-);
-var booking1: DeskBooking = new DeskBooking(
-  desk1,
-  new Date(2024, 0, 24),
-  "Stanley",
-  "Cooper"
-);
-var booking2: DeskBooking = new DeskBooking(
-  desk1,
-  new Date(2024, 0, 25),
-  "Stanley",
-  "Cooper"
-);
-var booking3: DeskBooking = new DeskBooking(
-  desk1,
-  new Date(2024, 0, 26),
-  "Stanley",
-  "Cooper"
-);
-var booking4: DeskBooking = new DeskBooking(
-  desk2,
-  new Date(2024, 0, 21),
-  "Andrew",
-  "Ember"
-);
-var booking5: DeskBooking = new DeskBooking(
-  desk2,
-  new Date(2024, 0, 22),
-  "Andrew",
-  "Ember"
-);
-var booking6: DeskBooking = new DeskBooking(
-  desk2,
-  new Date(2024, 0, 23),
-  "Andrew",
-  "Ember"
-);
+var booking0: DeskBooking = {
+  bookedDesk: desk1,
+  bookingDate: new Date(2024, 0, 22),
+  firstName: "Stanley",
+  lastName: "Cooper",
+};
+var booking1: DeskBooking = {
+  bookedDesk: desk1,
+  bookingDate: new Date(2024, 0, 24),
+  firstName: "Stanley",
+  lastName: "Cooper",
+};
+var booking2: DeskBooking = {
+  bookedDesk: desk1,
+  bookingDate: new Date(2024, 0, 25),
+  firstName: "Stanley",
+  lastName: "Cooper",
+};
+var booking3: DeskBooking = {
+  bookedDesk: desk1,
+  bookingDate: new Date(2024, 0, 26),
+  firstName: "Stanley",
+  lastName: "Cooper",
+};
+var booking4: DeskBooking = {
+  bookedDesk: desk2,
+  bookingDate: new Date(2024, 0, 21),
+  firstName: "Andrew",
+  lastName: "Ember",
+};
+var booking5: DeskBooking = {
+  bookedDesk: desk2,
+  bookingDate: new Date(2024, 0, 22),
+  firstName: "Andrew",
+  lastName: "Ember",
+};
+var booking6: DeskBooking = {
+  bookedDesk: desk2,
+  bookingDate: new Date(2024, 0, 23),
+  firstName: "Andrew",
+  lastName: "Ember",
+};
 
 var bookedDesks: Array<DeskBooking> = [
   booking0,
