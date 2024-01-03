@@ -35,7 +35,7 @@ function addDays(date: Date, days: number): Date {
   return result;
 }
 
-function removeArrayDuplicates(data: any[]): any[] {
+function removeArrayDuplicates(data: number[]): number[] {
   // Function that takes an array of data and removes any duplicate elements
   return data.filter((value, index) => data.indexOf(value) === index);
 }
