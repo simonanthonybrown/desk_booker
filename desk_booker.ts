@@ -47,7 +47,7 @@ function DeskNextAvailable(
   bookingArray: Array<DeskBooking>
 ): Date {
   // Filter bookings by Id passed into function
-  var bookingsForDesk = bookingArray.filter(
+  let bookingsForDesk = bookingArray.filter(
     (booking) => booking.bookedDesk.Id === Id
   );
 
@@ -58,7 +58,7 @@ function DeskNextAvailable(
   }
 
   // Array to contain all dates for current desk bookings
-  var bookedDates = [];
+  let bookedDates = [];
 
   // Iterate through bookings and add all dates to array
   for (var booking of bookingsForDesk) {
@@ -66,7 +66,7 @@ function DeskNextAvailable(
   }
 
   // Check if any current bookings are for the start date given
-  var bookingWithStartDate = bookedDates.some(
+  let bookingWithStartDate = bookedDates.some(
     (bookingDate) => bookingDate.getTime() === startDate.getTime()
   );
 
@@ -91,7 +91,7 @@ function DeskNextAvailable(
   // date is in the array. If it isn't, return the date from that iteration.
 
   for (var index = 0; index < bookedDatesSpliced.length; index++) {
-    var currentDate = addDays(startDate, index);
+    let currentDate = addDays(startDate, index);
     if (!(currentDate.getTime() === bookedDatesSpliced[index].getTime())) {
       return currentDate;
     }
@@ -161,19 +161,19 @@ var booking0: DeskBooking = new DeskBooking(
 );
 var booking1: DeskBooking = new DeskBooking(
   desk1,
-  new Date(2024, 0, 23),
+  new Date(2024, 0, 24),
   "Stanley",
   "Cooper"
 );
 var booking2: DeskBooking = new DeskBooking(
   desk1,
-  new Date(2024, 0, 24),
+  new Date(2024, 0, 25),
   "Stanley",
   "Cooper"
 );
 var booking3: DeskBooking = new DeskBooking(
   desk1,
-  new Date(2024, 0, 25),
+  new Date(2024, 0, 26),
   "Stanley",
   "Cooper"
 );
