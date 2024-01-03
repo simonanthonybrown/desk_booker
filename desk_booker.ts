@@ -127,7 +127,7 @@ function windowDeskNextAvailable(
     windowDeskIds.push(booking.bookedDesk.Id);
   }
 
-  // Create array of unique desk IDs
+  // Create array of unique desk IDs, windowDeskIds will contain duplicates
   let uniqueWindowDeskIds = removeArrayDuplicates(windowDeskIds);
 
   let windowDeskFree = [];
@@ -138,7 +138,7 @@ function windowDeskNextAvailable(
     windowDeskFree.push(dateAvailabe);
   }
 
-  // Sort the window desks available from earliest to latest date
+  // Sort the window desks available dates from earliest to latest date
   windowDeskFree.sort((a, b) => a.getTime() - b.getTime());
 
   // Return the earliest available window desk date (first index of array)
